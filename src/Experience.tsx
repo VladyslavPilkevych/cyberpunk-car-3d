@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { SECTION_IDS, type SectionId } from "./sections";
+import { asset } from "./utils/assets";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -122,7 +123,7 @@ const Hovercar = ({
   const desiredPos = useMemo(() => new THREE.Vector3(), []);
   const modelCenter = useMemo(() => new THREE.Vector3(), []);
 
-  const { scene, animations } = useGLTF("/model/hovercar.glb");
+  const { scene, animations } = useGLTF(asset("model/hovercar.glb"));
   const { actions } = useAnimations(animations, group);
 
   const mainActionRef = useRef<THREE.AnimationAction | null>(null);
@@ -339,6 +340,6 @@ const Experience = ({ isMobile = false }: { isMobile?: boolean }) => {
   );
 };
 
-useGLTF.preload("/model/hovercar.glb");
+useGLTF.preload(asset("model/hovercar.glb"));
 
 export default Experience;

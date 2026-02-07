@@ -7,6 +7,7 @@ import Loader from "./Loader";
 import Header from "./Header";
 import SpaceBackground from "./SpaceBackground";
 import { SECTION_IDS } from "./sections";
+import { asset } from "./utils/assets";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,13 +87,13 @@ const App: React.FC = () => {
   }, []);
 
   const galleryImages = [
-    "/images/img1.png",
-    "/images/img2.png",
-    "/images/img3.png",
-    "/images/img4.png",
-    "/images/img5.png",
-    "/images/img6.png",
-  ];
+    "img1.png",
+    "img2.png",
+    "img3.png",
+    "img4.png",
+    "img5.png",
+    "img6.png",
+  ].map((name) => asset(`images/${name}`));
 
   const contentSections = [
     {
