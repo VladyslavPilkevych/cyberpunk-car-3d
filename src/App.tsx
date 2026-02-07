@@ -2,12 +2,9 @@ import React, { Suspense, useLayoutEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Experience from "./Experience";
-import Loader from "./Loader";
-import Header from "./Header";
-import SpaceBackground from "./SpaceBackground";
-import { SECTION_IDS } from "./sections";
-import { asset } from "./utils/assets";
+import { Experience, SpaceBackground, Loader, Header } from "@/components";
+import { SECTION_IDS } from "@/utils/sections";
+import { asset } from "@/utils/assets";
 
 gsap.registerPlugin(ScrollTrigger);
 

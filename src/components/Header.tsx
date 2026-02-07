@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { SECTION_IDS } from "./sections";
+import { SECTION_IDS } from "@/utils/sections";
 
 gsap.registerPlugin(ScrollToPlugin);
 

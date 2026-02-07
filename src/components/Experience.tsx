@@ -4,8 +4,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
-import { SECTION_IDS, type SectionId } from "./sections";
-import { asset } from "./utils/assets";
+import { SECTION_IDS, type SectionId } from "@/utils/sections";
+import { asset } from "@/utils/assets";
 
 gsap.registerPlugin(ScrollTrigger);
 
