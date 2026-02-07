@@ -10,9 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
 const SCENARIOS = [
   {
     id: "hero",
-    position: new THREE.Vector3(0, 0.2, 2.8),
+    position: new THREE.Vector3(0, 0.25, 1.4),
     lookAt: new THREE.Vector3(0, 0, 0),
-    fov: 45,
+    fov: 32,
     lightIntensity: 0,
   },
   {
@@ -24,9 +24,9 @@ const SCENARIOS = [
   },
   {
     id: "flight-system",
-    position: new THREE.Vector3(-2.0, 1.0, 3.0),
-    lookAt: new THREE.Vector3(0, 0, 0),
-    fov: 45,
+    position: new THREE.Vector3(-1.1, 1.1, 1.2),
+    lookAt: new THREE.Vector3(0, 0.1, 0),
+    fov: 38,
     lightIntensity: 0,
   },
   {
@@ -52,6 +52,15 @@ const SCENARIOS = [
   },
 ];
 
+const ANIM_POINTS = {
+  hero: 0.0,
+  overview: 0.05,
+  "flight-system": 0.1,
+  engine: 0.2,
+  details: 0.6,
+  vision: 0.9,
+} as const;
+
 const damp = THREE.MathUtils.damp;
 
 const Hovercar = ({
@@ -71,6 +80,7 @@ const Hovercar = ({
     lz: SCENARIOS[0].lookAt.z,
     fov: SCENARIOS[0].fov,
     light: SCENARIOS[0].lightIntensity,
+    orbit: 0,
   });
 
   const animTarget = useRef({ t: 0 });
@@ -83,6 +93,8 @@ const Hovercar = ({
       ),
     [],
   );
+  const orbitAxis = useMemo(() => new THREE.Vector3(0, 1, 0), []);
+  const desiredPos = useMemo(() => new THREE.Vector3(), []);
   const modelCenter = useMemo(() => new THREE.Vector3(), []);
 
   const { scene, animations } = useGLTF("/model/hovercar.glb");
@@ -134,10 +146,14 @@ const Hovercar = ({
   useFrame((_, dt) => {
     const t = target.current;
 
+    desiredPos
+      .set(t.px, t.py, t.pz)
+      .applyAxisAngle(orbitAxis, t.orbit);
+
     camera.position.set(
-      damp(camera.position.x, t.px, 8, dt),
-      damp(camera.position.y, t.py, 8, dt),
-      damp(camera.position.z, t.pz, 8, dt),
+      damp(camera.position.x, desiredPos.x, 8, dt),
+      damp(camera.position.y, desiredPos.y, 8, dt),
+      damp(camera.position.z, desiredPos.z, 8, dt),
     );
 
     lookAtVec.set(
@@ -170,6 +186,7 @@ const Hovercar = ({
   });
 
   useLayoutEffect(() => {
+    let teardown: (() => void) | undefined;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -189,7 +206,6 @@ const Hovercar = ({
       SCENARIOS.forEach((s, i) => {
         if (i === 0) return;
         const at = i - 1;
-        const k = i / segments;
 
         tl.to(
           target.current,
@@ -208,10 +224,11 @@ const Hovercar = ({
           at,
         );
 
+        const p = ANIM_POINTS[s.id as keyof typeof ANIM_POINTS] ?? 0;
         tl.to(
           animTarget.current,
           {
-            t: () => duration() * k,
+            t: () => duration() * p,
             ease: "none",
             duration: 1,
           },
@@ -219,19 +236,51 @@ const Hovercar = ({
         );
       });
 
+      tl.to(
+        target.current,
+        {
+          orbit: Math.PI * 2,
+          ease: "none",
+          duration: segments,
+        },
+        0,
+      );
+
       tl.totalDuration(segments);
+
+      const syncToScroll = () => {
+        ScrollTrigger.refresh();
+        ScrollTrigger.update();
+        tl.progress(tl.scrollTrigger?.progress ?? 0);
+      };
+
+      const raf1 = requestAnimationFrame(() => {
+        requestAnimationFrame(syncToScroll);
+      });
+
+      window.addEventListener("load", syncToScroll);
+      window.addEventListener("pageshow", syncToScroll);
       ScrollTrigger.refresh();
+
+      teardown = () => {
+        cancelAnimationFrame(raf1);
+        window.removeEventListener("load", syncToScroll);
+        window.removeEventListener("pageshow", syncToScroll);
+      };
     });
 
-    return () => ctx.revert();
+    return () => {
+      teardown?.();
+      ctx.revert();
+    };
   }, []);
 
   return (
     <Float
-      speed={1.1}
-      rotationIntensity={0.18}
-      floatIntensity={0.22}
-      floatingRange={[-0.1, 0.1]}
+      speed={2.5}
+      rotationIntensity={0.2}
+      floatIntensity={0.9}
+      floatingRange={[-0.05, 0.05]}
     >
       <primitive
         ref={group}

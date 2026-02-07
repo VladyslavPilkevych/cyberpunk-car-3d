@@ -3,11 +3,13 @@ import { Canvas } from "@react-three/fiber";
 import Experience from "./Experience";
 import Loader from "./Loader";
 import Header from "./Header";
+import SpaceBackground from "./SpaceBackground";
 
 const App: React.FC = () => {
   return (
     <>
       <Loader />
+      <SpaceBackground />
       <Header />
       <div className="landing-container">
         <div className="canvas-container">
