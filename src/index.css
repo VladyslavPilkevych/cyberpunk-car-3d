@@ -48,12 +48,43 @@ section {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 0;
-  pointer-events: none;
+  z-index: 0; /* Behind everything */
 }
 
-.canvas-container canvas {
-  pointer-events: auto;
+/* Sections */
+section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 10; /* Above canvas */
+  pointer-events: none; /* Let clicks pass through empty areas */
+}
+
+/* Content Panel */
+.content-block {
+  background: rgba(10, 10, 10, 0.75); /* Darker, semi-transparent */
+  backdrop-filter: blur(12px); /* Stronger blur */
+  -webkit-backdrop-filter: blur(12px);
+  padding: 4rem;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+  width: 100%;
+  pointer-events: auto; /* Re-enable clicks on the panel */
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+  text-align: center;
+}
+
+.content-block:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
 }
 
 .canvas-placeholder {
@@ -67,46 +98,60 @@ section {
 h1 {
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 800;
-  margin-bottom: 1rem;
-  text-align: center;
-  background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 h2 {
   font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 1.5rem;
+  color: #fff;
 }
 
 p {
-  font-size: 1.2rem;
-  max-width: 600px;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.25rem;
+  max-width: 650px;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
 }
 
 .hero p {
   font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.content-block {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  padding: 3rem;
-  border-radius: 24px;
-  border: 1px solid var(--glass-border);
-  max-width: 800px;
-  width: 100%;
-  transition:
-    transform 0.3s ease,
-    border-color 0.3s ease;
+/* Hero layout: keep the center of the canvas clearer */
+.hero {
+  align-items: flex-start;
+  padding-left: clamp(2rem, 8vw, 8rem);
 }
 
-.content-block:hover {
-  transform: translateY(-5px);
-  border-color: var(--accent-color);
+.hero .hero-block {
+  max-width: 520px;
+  text-align: left;
+  background: rgba(10, 10, 10, 0.55);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.hero .hero-block p {
+  max-width: 520px;
+}
+
+.eyebrow {
+  color: var(--accent-color);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.75rem;
+  display: block;
 }
 
 .loader-container {
@@ -247,6 +292,11 @@ p {
     padding: 0.25rem 0.5rem;
     white-space: nowrap;
   }
+
+  .hero {
+    align-items: center;
+    padding-left: 1.5rem;
+  }
 }
 
 .header {
@@ -277,6 +327,7 @@ p {
   font-size: 1.5rem;
   letter-spacing: 1px;
   background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: pointer;
@@ -305,9 +356,132 @@ p {
   letter-spacing: 1px;
 }
 
-.nav-link:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 10px rgba(0, 122, 255, 0.5);
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+/* ... existing styles ... */
+
+/* Gallery Section */
+.gallery-section {
+  width: 100%;
+  padding: 8rem 2rem;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* Let clicks pass through gaps */
+  z-index: 10;
+  position: relative;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  pointer-events: auto;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+  aspect-ratio: 16/9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-item:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 122, 255, 0.3);
+  border-color: var(--accent-color);
+  z-index: 11;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+
+/* Interlude Section */
+.interlude-section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+  position: relative;
+}
+
+.interlude-text {
+  font-size: clamp(4rem, 15vw, 12rem);
+  font-weight: 900;
+  line-height: 0.9;
+  text-align: center;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.3);
+  letter-spacing: -0.02em;
+  opacity: 0.8;
+  mix-blend-mode: overlay;
+}
+
+@media (max-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .interlude-text {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Mobile Fallback: Solid background for non-3D sections */
+  section,
+  .interlude-section {
+    background-color: var(--bg-color); /* Cover the fixed canvas */
+    z-index: 20; /* Sit above canvas */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Keep 3D visible for Hero and Gallery */
+  .hero,
+  .gallery-section {
+    background-color: transparent !important;
+    pointer-events: none; /* Let clicks pass to canvas if needed, though mostly for scroll */
+  }
+
+  /* Ensure content blocks look good on solid bg */
+  .content-block {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Adjust spacing for mobile "normal scroll" feel */
+  section {
+    min-height: auto;
+    padding: 6rem 1.5rem;
+  }
+
+  .hero {
+    min-height: 100vh; /* Leading section still full height */
+  }
+
+  .gallery-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 }

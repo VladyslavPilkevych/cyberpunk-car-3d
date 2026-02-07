@@ -1,15 +1,16 @@
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { SECTION_IDS } from "./sections";
 
 gsap.registerPlugin(ScrollToPlugin);
 
 const Header = () => {
   const navItems = [
-    { label: "Hero", target: "#hero" },
-    { label: "Overview", target: "#overview" },
-    { label: "Flight System", target: "#flight-system" },
-    { label: "Engine", target: "#engine" },
-    { label: "Details", target: "#details" },
+    { label: "Hero", target: `#${SECTION_IDS.hero}` },
+    { label: "Overview", target: `#${SECTION_IDS.overview}` },
+    { label: "Flight System", target: `#${SECTION_IDS.flightSystem}` },
+    { label: "Engine", target: `#${SECTION_IDS.engine}` },
+    { label: "Details", target: `#${SECTION_IDS.details}` },
   ];
 
   const handleScrollTo = (target: string) => {
