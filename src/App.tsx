@@ -23,7 +23,6 @@ const App: React.FC = () => {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate Content Blocks
       gsap.utils.toArray<HTMLElement>(".content-block").forEach((block) => {
         gsap.fromTo(
           block,
@@ -43,7 +42,6 @@ const App: React.FC = () => {
         );
       });
 
-      // Animate Interlude Text
       gsap.utils.toArray<HTMLElement>(".interlude-text").forEach((text) => {
         gsap.fromTo(
           text,
@@ -64,7 +62,6 @@ const App: React.FC = () => {
         );
       });
 
-      // Animate Gallery Items
       gsap.utils.toArray<HTMLElement>(".gallery-item").forEach((item, i) => {
         gsap.fromTo(
           item,
@@ -79,7 +76,7 @@ const App: React.FC = () => {
               start: "top 90%",
               toggleActions: "play reverse play reverse",
             },
-            delay: (i % 3) * 0.1, // Stagger effect based on column
+            delay: (i % 3) * 0.1,
           },
         );
       });
@@ -102,36 +99,31 @@ const App: React.FC = () => {
       id: SECTION_IDS.overview,
       eyebrow: "02 — AERODYNAMICS",
       title: "SCULPTED BY WIND",
-      body:
-        "Every curve is calculated. The composite fuselage creates a frictionless envelope, allowing the X-1 to slice through the atmosphere with near-zero drag coefficient at high velocity.",
+      body: "Every curve is calculated. The composite fuselage creates a frictionless envelope, allowing the X-1 to slice through the atmosphere with near-zero drag coefficient at high velocity.",
     },
     {
       id: SECTION_IDS.flightSystem,
       eyebrow: "03 — FLIGHT SYSTEM",
       title: "NEURAL LINK CONTROL",
-      body:
-        "Interface directly with the core. Our proprietary haptic flight feedback loop syncs with your nervous system, making the machine an extension of your own will.",
+      body: "Interface directly with the core. Our proprietary haptic flight feedback loop syncs with your nervous system, making the machine an extension of your own will.",
     },
     {
       id: SECTION_IDS.engine,
       eyebrow: "04 — PROPULSION",
       title: "ION-CORE REACTOR",
-      body:
-        "Silent. Limitless. The dual-stage ion thrusters generate 40,000 lbs of thrust, powered by a magnetically contained singularity that hums with infinite potential.",
+      body: "Silent. Limitless. The dual-stage ion thrusters generate 40,000 lbs of thrust, powered by a magnetically contained singularity that hums with infinite potential.",
     },
     {
       id: SECTION_IDS.details,
       eyebrow: "05 — COCKPIT",
       title: "TOTAL IMMERSION",
-      body:
-        "Surrounded by bioactive glass and adaptive telemetry displays, the cockpit offers 360-degree visibility and life-support systems rated for stratospheric cruising.",
+      body: "Surrounded by bioactive glass and adaptive telemetry displays, the cockpit offers 360-degree visibility and life-support systems rated for stratospheric cruising.",
     },
     {
       id: SECTION_IDS.vision,
       eyebrow: "06 — HORIZON",
       title: "OWN THE SKIES",
-      body:
-        "The ground is a memory. Ascend to new heights and claim your place among the clouds. The X-1 isn't just transport; it's absolute freedom.",
+      body: "The ground is a memory. Ascend to new heights and claim your place among the clouds. The X-1 isn't just transport; it's absolute freedom.",
     },
   ];
 
@@ -176,7 +168,6 @@ const App: React.FC = () => {
           </section>
         ))}
 
-        {/* Interlude 1 */}
         <div id={SECTION_IDS.rear} className="interlude-section">
           <div className="interlude-text">
             NO ROADS
@@ -195,7 +186,6 @@ const App: React.FC = () => {
           </section>
         ))}
 
-        {/* Gallery Section */}
         <div id={SECTION_IDS.gallery} className="gallery-section">
           <div className="gallery-grid">
             {galleryImages.map((src, index) => (
@@ -216,7 +206,6 @@ const App: React.FC = () => {
           </section>
         ))}
 
-        {/* Interlude 2 */}
         <div className="interlude-section">
           <div className="interlude-text">
             FUTURE
